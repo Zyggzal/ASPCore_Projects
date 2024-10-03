@@ -1,0 +1,22 @@
+﻿@using System.Reflection;
+@model Tuple<string, string, object>;
+
+<div class="modal fade text-white" id="@Model.Item1" tabindex="-1" role="dialog" aria-labelledby="title1" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content bg-dark">
+      <div class="modal-header border-warning">
+        <h5 class="modal-title" id="title1">Are you sure?</h5>
+        <button type="button" class="close bg-dark text-warning border-0" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          This @Model.Item3.GetType().Name will be deleted!
+      </div>
+      <div class="modal-footer border-warning"> 
+        <a asp-action="@Model.Item2" asp-controller="Home" asp-route-id="@Model.Item3.GetType().GetProperty("Id").GetValue(Model.Item3)" class="btn btn-outline-danger m-1">Yes</a>
+        <button type="button" class="btn btn-outline-light m-1" data-bs-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

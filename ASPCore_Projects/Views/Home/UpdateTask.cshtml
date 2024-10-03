@@ -1,0 +1,23 @@
+﻿@model MyTask;
+<form asp-controller="Home" asp-action="UpdateTask" method="POST">
+    <input asp-for="ProjectId" type="hidden"/>
+  <div class="form-group">
+    <input asp-for="Title" type="text" class="form-control bg-dark text-white m-1 border-warning" placeholder="Title" required>
+    <input asp-for="DueDate" type="datetime-local" class="form-control bg-dark text-white m-1 border-warning" required>
+    <div class="bg-dark text-white border-warning m-3">
+        <label>Is Completed: <input asp-for="IsCompleted" type="checkbox"></label>
+    </div>
+    <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <label class="input-group-text bg-dark text-white border-warning" for="inputGroupSelect01">User</label>
+  </div>
+  <select asp-for="UserId" asp-items="ViewBag.Users" class="custom-select bg-dark text-white border-warning" id="inputGroupSelect01"></select>
+    </div>
+    <textarea asp-for="Description" class="form-control bg-dark text-white m-1 border-warning" placeholder="Description" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-outline-warning m-1">Confirm</button>
+  <a asp-action="ProjectDetails" asp-controller="Home" asp-route-id="@Model.ProjectId" type="submit" class="btn btn-outline-secondary m-1">Back</a>
+</form>
+
+
+ 

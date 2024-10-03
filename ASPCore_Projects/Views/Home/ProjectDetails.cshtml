@@ -1,0 +1,127 @@
+﻿@model Project;
+  <div class="form-group text-white">
+    <label class="text-white" asp-for="Name">Name:</label>
+    <h1 class=" bg-dark m-1 border-warning">@Model.Name</h1>
+    <p>By: @Model.Owner.UserName</p>
+    <h2>About the project:</h2>
+    <p class="m-2"><big>@Model.Description</big></p>
+    <p class="text-muted">Created: @Model.CreatedAt</p>
+        @if (Model.UpdatedAt != null)
+        { 
+               <p class="text-muted">Last Update: @Model.UpdatedAt</p>
+        }
+    </div>
+@if(User.Identity.Name == Model.Owner.UserName)
+{
+    <a asp-action="UpdateProject" asp-controller="Home" asp-route-id="@Model.Id" class="btn btn-outline-info m-1">Edit</a>
+    <button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#rusure">Delete</button>
+    @Html.Partial("_RUSurePartial", Tuple.Create("rusure", "DeleteProject", (object)Model));
+}
+
+
+<div>
+    @if(Model != null && Model.Tasks.Count > 0)
+    {
+      <h2>Tasks:</h2>
+            <div class="list-group">
+      <p class="list-group-item bg-warning">
+            <b>This project's tasks:</b>
+      </p>
+            @foreach (var task in Model.Tasks)
+            {
+                if (task.IsCompleted)
+                {
+                            <div class="list-group-item text-white border-info" style="background-color:#17191c;">
+                            <div class="d-flex w-100 justify-content-between">
+                           <h5 class="mb-1">@task.Title</h5>
+                                       <small class=" text-light">@task.User.UserName</small>
+                            </div>
+                            <div class="d-flex w-100 justify-content-between text-muted">
+                                    <p class="text-info">Completed</p>
+                                    <small>Complete before: <b>@task.DueDate</b></small>
+                            </div>
+                            <div class="d-flex w-100 justify-content-between text-muted">
+                                <p>@task.Description</p>
+                                <div>
+                                @if (Model.Owner.UserName == User.Identity.Name)
+                                {
+                                    <a asp-action="UpdateTask" asp-controller="Home" asp-route-id="@task.Id" type="button" class="btn btn-outline-warning m-1">Edit</a>
+                                    <button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deltask@(task.Id)">Delete</button>
+                                }
+                                </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    if(task.DueDate > DateTime.Now)
+                    {
+                           <div class="list-group-item text-white border-warning" style="background-color:#17191c;">
+                                <div class="d-flex w-100 justify-content-between">
+                                          <h5 class="mb-1">@task.Title</h5>
+                                           <small class=" text-light">@task.User.UserName</small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between text-muted">
+                                        <p>Pending</p>
+                                        <small>Complete before: <b>@task.DueDate</b></small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between text-muted">
+                                    <p>@task.Description</p>
+                                <div>
+                                    @if (task.User.UserName == User.Identity.Name)
+                                    {
+                                                        <a asp-controller="Home" asp-action="CompleteTask" asp-route-id="@task.Id" class="btn btn-outline-info m-1">Complete</a>
+                                    }
+                                    @if (Model.Owner.UserName == User.Identity.Name)
+                                    {
+                                                        <a asp-action="UpdateTask" asp-controller="Home" asp-route-id="@task.Id" type="button" class="btn btn-outline-warning m-1">Edit</a>
+                                                        <button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deltask@(task.Id)">Delete</button>
+                                    }
+                                </div>
+                               </div>
+                            </div>
+                    }
+                    else
+                    {
+                         <div class="list-group-item text-white border-danger" style="background-color:#17191c;">
+                                  <div class="d-flex w-100 justify-content-between">
+                                               <h5 class="mb-1">@task.Title</h5>
+                                               <small class=" text-light">@task.User.UserName</small>
+                                 </div>
+                                <div class="d-flex w-100 justify-content-between text-muted">
+                                          <p class="text-danger">Overdue</p>
+                                           <small class="text-danger">Complete before: <b>@task.DueDate</b></small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between text-muted">
+                                                 <p>@task.Description</p>
+                                <div>
+                                    @if (task.User.UserName == User.Identity.Name)
+                                    {
+                                            <a asp-controller="Home" asp-action="CompleteTask" asp-route-id="@task.Id" class="btn btn-outline-info m-1">Complete</a>
+                                    }
+                                    @if (Model.Owner.UserName == User.Identity.Name)
+                                    {
+                                            <a asp-action="UpdateTask" asp-controller="Home" asp-route-id="@task.Id" type="button" class="btn btn-outline-warning m-1">Edit</a>
+                                            <button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deltask@(task.Id)">Delete</button>
+                                    }
+                                </div>
+                               </div>
+                       </div>
+                    }
+                }
+                @Html.Partial("_RUSurePartial", Tuple.Create($"deltask{task.Id}", "DeleteTask", (object)task));
+            }
+
+        </div>
+    }
+    else
+    {
+            <p class= "bg-warning p-2 rounded mt-5 text-dark"><strong>No tasks for this project currently</strong></p>
+    }
+    @if(User.Identity.Name == Model.Owner.UserName)
+    {
+        <a asp-action="CreateTask" asp-controller="Home" asp-route-id="@Model.Id" class="btn btn-outline-info m-1">Add Task</a>  
+    }
+</div>
+<a href="/" class="btn btn-outline-warning m-1">Return</a>
+

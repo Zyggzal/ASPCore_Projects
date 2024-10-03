@@ -1,0 +1,17 @@
+﻿@model Project;
+<form asp-controller="Home" asp-action="UpdateProject" method="POST">
+  <div class="form-group">
+    <label class="text-white" asp-for="Name">Name</label>
+    <input asp-for="Name" type="text" class="form-control bg-dark text-white m-1 border-warning" placeholder="Name" required>
+    <label class="text-white" asp-for="Description">Description</label>
+    <textarea asp-for="Description" class="form-control bg-dark text-white m-1 border-warning" placeholder="Description" rows="3"></textarea>
+    <p class="text-white">Created: @Model.CreatedAt</p>
+        @if(Model.UpdatedAt != null)
+        { 
+           <p class="text-white">Last Update: @Model.UpdatedAt</p>
+        }
+    </div>
+  <button type="submit" class="btn btn-outline-warning m-1">Confirm</button>
+  <a asp-action="ProjectDetails" asp-controller="Home" asp-route-id="@Model.Id" class="btn btn-outline-secondary m-1">Back</a>
+
+</form>

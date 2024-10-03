@@ -1,0 +1,8 @@
+﻿@model Project;
+<form asp-controller="Home" asp-action="CreateProject" method="POST">
+  <div class="form-group">
+    <input asp-for="Name" type="text" class="form-control bg-dark text-white m-1 border-warning" placeholder="Name" required>
+    <textarea asp-for="Description" class="form-control bg-dark text-white m-1 border-warning" placeholder="Description" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-outline-warning m-1">Submit</button>
+</form>

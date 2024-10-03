@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<Project>
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+<div class="list-group">
+  <p class="list-group-item bg-warning">
+        <b>Here are some projects:</b>
+  </p>
+    @foreach(var proj in Model)
+    {
+        <a asp-controller="Home" asp-action="ProjectDetails" asp-route-id="@proj.Id" class="list-group-item text-white border-warning" style="background-color:#17191c;">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">@proj.Name</h5>
+          <small>@proj.CreatedAt</small>
+        </div>
+        <div class="d-flex w-100 justify-content-between">
+            <p class="mb-1">@proj.Description</p>
+                @if(proj.UpdatedAt != null)
+                {
+                    <small>Last update: @proj.UpdatedAt</small>
+                }
+        </div>
+        <small>@proj.Owner?.UserName</small>
+      </a>
+    }
+
+</div>
